@@ -4,11 +4,18 @@ import express from "express" //server
 import cors from "cors"
 import { connectDB } from "./src/config/db.js"
 import categoryRoutes from "./src/routes/categories.Routes.js"
+import bodyParser from "body-parser"
 // extensions in server imports are so important. 
 //the dotenv config
 dotenv.config()
 // define the server
 const app = express()
+app.use(express.json())
+
+// the old approach
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }));
+
 connectDB()
 // security - on api headers
 
@@ -27,7 +34,7 @@ app.get('/health', (req, res) => {
 // api use
 app.use('/api', categoryRoutes)
 
-
+// localhost:3000/api
 const port = process.env.PORT // read from env file
 //start server
 app.listen(port, () => {
