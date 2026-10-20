@@ -10,11 +10,11 @@ const categorySchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, "Name is Required"],
             trim: true,
-            minLength: 2,
-            maxLength: 20,
-            unique: true
+            minLength: [2, 'Minimum Length is 2 charecters'],
+            maxLength: [20, 'Maximim length is 20'],
+            unique: [true, 'Category name is already exist']
         },
         description: {
             type: String,
