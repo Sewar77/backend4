@@ -6,6 +6,7 @@ import { connectDB } from "./src/config/db.js"
 import categoryRoutes from "./src/routes/categories.Routes.js"
 import bodyParser from "body-parser"
 import productsRoutes from "./src/routes/products.Routes.js"
+import authRoutes from "./src/routes/auth.Routes.js"
 // extensions in server imports are so important. 
 //the dotenv config
 dotenv.config()
@@ -35,6 +36,7 @@ app.get('/health', (req, res) => {
 // api use
 app.use('/api', categoryRoutes)
 app.use('/api', productsRoutes)
+app.use('/api', authRoutes)
 
 // localhost:3000/api
 const port = process.env.PORT // read from env file
