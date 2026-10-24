@@ -7,6 +7,7 @@ import categoryRoutes from "./src/routes/categories.Routes.js"
 import bodyParser from "body-parser"
 import productsRoutes from "./src/routes/products.Routes.js"
 import authRoutes from "./src/routes/auth.Routes.js"
+import userRoutes from "./src/routes/user.Routes.js"
 // extensions in server imports are so important. 
 //the dotenv config
 dotenv.config()
@@ -37,6 +38,7 @@ app.get('/health', (req, res) => {
 app.use('/api', categoryRoutes)
 app.use('/api', productsRoutes)
 app.use('/api', authRoutes)
+app.use('/api', userRoutes)
 
 // localhost:3000/api
 const port = process.env.PORT // read from env file

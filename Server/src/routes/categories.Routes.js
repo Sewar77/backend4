@@ -10,16 +10,17 @@ import {
     getCategoryByName,
     updateCategory,
 } from "../controller/categories.Controller.js";
+import { protect } from "../middleware/protect.Middleware.js";
 
 const router = express.Router();
 
-router.post("/category", createCategory);
+router.post("/category", protect, createCategory);
 router.get("/categories", getAllCategories);
 router.get('/category/:id', getCategoryById)
 // /category/xd98wsxu897dw823d
 // params - url (endpoints)
 router.post('/category/name', getCategoryByName)
 // /category/name
-router.put("/category/:id", updateCategory)
-router.delete("/category/:id", deleteCategory)
+router.put("/category/:id", protect, updateCategory)
+router.delete("/category/:id", protect, deleteCategory)
 export default router;
