@@ -36,8 +36,10 @@ export default function Header() {
             <IconButton onClick={() => navigate("/products")}>
               Products
             </IconButton>
-            <IconButton>Login</IconButton>
-            <IconButton>Register</IconButton>
+            <IconButton onClick={() => navigate("/login")}>Login</IconButton>
+            <IconButton onClick={() => navigate("/register")}>
+              Register
+            </IconButton>
             <IconButton>About</IconButton>
             <IconButton>Contact</IconButton>
           </Box>
