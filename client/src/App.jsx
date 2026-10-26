@@ -1,21 +1,15 @@
-import { useState } from "react";
-import api from "./api.js";
-import { useEffect } from "react";
+import Home from "./Components/Home/Home";
+import Products from "./Components/Products/Products";
+import { Routes, Route } from "react-router-dom";
 function App() {
-  const [products, setProducts] = useState([]);
-  const getProducts = async () => {
-    try {
-      //response      request
-      const res = await api.get("/products"); //the completed part
-      setProducts(res.data.products);
-      console.log("the response is: ", res.data.products);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    getProducts();
-  }, []); // later for now
-  return <></>;
+  return (
+    <>
+      <Routes>
+        <Route path="/products" element={<Products />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
