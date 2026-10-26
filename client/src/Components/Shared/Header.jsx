@@ -6,8 +6,9 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <>
       <AppBar position="static">
@@ -17,7 +18,8 @@ export default function Header() {
             flexDirection: "row",
             justifyContent: "space-between",
             p: 3,
-            bgcolor: "violet",
+            bgcolor: "#F1DDCF",
+            flexWrap: "wrap",
           }}
         >
           <Typography variant="h2">Logo</Typography>
@@ -27,10 +29,13 @@ export default function Header() {
               flexDirection: "row",
               justifyContent: "center",
               gap: 3,
+              flexWrap: "wrap",
             }}
           >
-            <IconButton>Home</IconButton>
-            <IconButton>Products</IconButton>
+            <IconButton onClick={() => navigate("/")}>Home</IconButton>
+            <IconButton onClick={() => navigate("/products")}>
+              Products
+            </IconButton>
             <IconButton>Login</IconButton>
             <IconButton>Register</IconButton>
             <IconButton>About</IconButton>
