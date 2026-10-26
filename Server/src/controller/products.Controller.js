@@ -57,6 +57,7 @@ export const getAllProducts = async (req, res) => {
             return res.status(200).json({ message: "No products yet", products: [] });
         }
         return res.status(200).json({ message: " products get", products });
+        //data
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
