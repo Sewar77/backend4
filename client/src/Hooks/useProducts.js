@@ -6,7 +6,7 @@ export const useProducts = () => {
     //getallproducts
     const getAllProducts = async () => {
         try {
-            const res = await api.get('/products');
+            const res = await api.get('/products'); // read from backend 
             setProucts(res.data.products)
         } catch (error) {
             console.log(error)

@@ -6,8 +6,10 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <>
       <AppBar position="static">
@@ -31,8 +33,10 @@ export default function Header() {
           >
             <IconButton>Home</IconButton>
             <IconButton>Products</IconButton>
-            <IconButton>Login</IconButton>
-            <IconButton>Register</IconButton>
+            <IconButton onClick={() => navigate("/login")}>Login</IconButton>
+            <IconButton onClick={() => navigate("/register")}>
+              Register
+            </IconButton>
             <IconButton>About</IconButton>
             <IconButton>Contact</IconButton>
           </Box>
