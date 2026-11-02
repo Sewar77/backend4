@@ -1,6 +1,6 @@
-import { Button, Container, Paper, TextField, Typography } from "@mui/material";
+import { Button, Container, Paper, TextField } from "@mui/material";
+import { useState } from "react";
 import { useCategories } from "../../../Hooks/useCategories";
-import { useEffect, useState } from "react";
 
 export default function AddCategoryForm({ setOpenForm }) {
   const { addCategory } = useCategories();
@@ -8,7 +8,7 @@ export default function AddCategoryForm({ setOpenForm }) {
     name: "",
     description: "",
   });
-  const handleSubmit = () => {
+  const handleAdd = () => {
     addCategory(category);
     setOpenForm(false);
   };
@@ -25,19 +25,19 @@ export default function AddCategoryForm({ setOpenForm }) {
             p: 3,
           }}
         >
-          <Typography>Add CATEGORY</Typography>
           <TextField
             label="Name"
             required
             onChange={(e) => setCategory({ ...category, name: e.target.value })}
           />
           <TextField
-            label="Description"
+            label="Descirpiotn"
             onChange={(e) =>
               setCategory({ ...category, description: e.target.value })
             }
           />
-          <Button variant="contained" onClick={() => handleSubmit()}>
+
+          <Button variant="contained" onClick={() => handleAdd()}>
             Add
           </Button>
         </Paper>
