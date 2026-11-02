@@ -3,15 +3,15 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 export default function ConfirmDeleteModal({
   openModal,
   setOpenModal,
-  setProductId,
-  productId,
-  deleteProduct,
+  setId,
+  id,
+  deleteItem,
 }) {
   return (
     <>
       <Modal
         open={openModal}
-        onClose={() => (setOpenModal(false), setProductId(null))}
+        onClose={() => (setOpenModal(false), setId(null))}
       >
         <Box
           sx={{
@@ -41,14 +41,14 @@ export default function ConfirmDeleteModal({
             <Button
               variant="contained"
               color="error"
-              onClick={() => (deleteProduct(productId), setOpenModal(false))}
+              onClick={() => (deleteItem(id), setOpenModal(false))}
             >
               OK
             </Button>
             <Button
               variant="contained"
               color="warning"
-              onClick={() => (setOpenModal(false), setProductId(null))}
+              onClick={() => (setOpenModal(false), setId(null))}
             >
               Cancel
             </Button>

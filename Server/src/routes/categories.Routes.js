@@ -13,7 +13,6 @@ import {
 import { protect } from "../middleware/protect.Middleware.js";
 
 const router = express.Router();
-
 router.post("/category", protect, createCategory);
 router.get("/categories", getAllCategories);
 router.get('/category/:id', getCategoryById)

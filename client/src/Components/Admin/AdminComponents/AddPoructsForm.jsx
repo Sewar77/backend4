@@ -1,6 +1,17 @@
-import { Button, Container, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useProducts } from "../../../Hooks/useProducts";
+import { useCategories } from "../../../Hooks/useCategories";
 
 export default function AddProductsForm({ setOpenAddForm }) {
   const { addProduct } = useProducts();
@@ -16,6 +27,8 @@ export default function AddProductsForm({ setOpenAddForm }) {
     addProduct(product);
     setOpenAddForm(false);
   };
+  const { categories } = useCategories();
+
   return (
     <>
       <Container sx={{ my: "auto" }}>
@@ -39,10 +52,26 @@ export default function AddProductsForm({ setOpenAddForm }) {
               setProduct({ ...product, description: e.target.value })
             }
           />
-          <TextField
-            label="Category"
-            onChange={(e) => setProduct({ ...product, catId: e.target.value })}
-          />
+
+          <FormControl fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              label="Category"
+              onChange={(e) =>
+                setProduct({ ...product, catId: e.target.value })
+              }
+              value={product.catId}
+            >
+              {categories.map((cat) => {
+                return (
+                  <MenuItem key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
           <TextField
             label="Stock"
             type="number"

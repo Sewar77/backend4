@@ -20,6 +20,8 @@ export default function DisplayProducts() {
   const [openModal, setOpenModal] = useState(false);
   const [productId, setProductId] = useState(null);
   const [openAddForm, setOpenAddForm] = useState(false);
+
+  console.log(products);
   return (
     <>
       <Box sx={{ my: 3 }}>
@@ -94,9 +96,9 @@ export default function DisplayProducts() {
       <ConfirmDeleteModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        setProductId={setProductId}
-        productId={productId}
-        deleteProduct={deleteProduct}
+        setId={setProductId}
+        id={productId}
+        deleteItem={deleteProduct}
       />
     </>
   );

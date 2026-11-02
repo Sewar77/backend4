@@ -33,7 +33,9 @@ export default function Sidebar() {
           <ListItemButton onClick={() => navigate("/admin/manage-products")}>
             Manage Profucts
           </ListItemButton>
-          <ListItemButton>Manage Categories</ListItemButton>
+          <ListItemButton onClick={() => navigate("/admin/manage-categories")}>
+            Manage Categories
+          </ListItemButton>
           <ListItemButton>Manage Messages</ListItemButton>
           <ListItemButton>Manage Profile</ListItemButton>
           <ListItemButton onClick={() => logout()}>Logout</ListItemButton>
