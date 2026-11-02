@@ -34,10 +34,20 @@ export const useProducts = () => {
             console.log(error.response?.data?.message)
         }
     }
+    const editProduct = async (id, product) => {
+        try {
+            const res = await api.put(`/product/${id}`, product);
+            toast.success(res.data.message)
+            getAllProducts() //refresh table after delete
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
     // call the function everyminute
     useEffect(() => { //apply effect on the functions inside
         getAllProducts() // the effects is calling the function
     }, [])
 
-    return { products, deleteProduct, addProduct }
+    return { products, deleteProduct, addProduct, editProduct }
 }

@@ -2,26 +2,47 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useProducts } from "../../../../Hooks/useProducts";
 import { useState } from "react";
 import ConfirmDeleteModal from "../../AdminComponents/ConfirmDeleteModal";
 import AddProductsForm from "../../AdminComponents/AddPoructsForm";
+import { useCategories } from "../../../../Hooks/useCategories";
 export default function DisplayProducts() {
-  const { products, deleteProduct } = useProducts();
+  const { products, deleteProduct, editProduct } = useProducts();
+  const { categories } = useCategories();
   const [openModal, setOpenModal] = useState(false);
   const [productId, setProductId] = useState(null);
   const [openAddForm, setOpenAddForm] = useState(false);
 
-  console.log(products);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [editedId, setEditedId] = useState(null);
+  const [updatePorduct, setUpdateProduct] = useState({
+    name: "",
+    description: "",
+    stock: 0,
+    price: 0,
+    catId: "",
+    image: "",
+  });
+  const handleUpdate = () => {
+    console.log(updatePorduct);
+    editProduct(editedId, updatePorduct);
+    setOpenEditModal(false);
+  };
   return (
     <>
       <Box sx={{ my: 3 }}>
@@ -72,7 +93,22 @@ export default function DisplayProducts() {
                     </TableCell>
                     <TableCell>{prod.image || "-----"}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="warning">
+                      <Button
+                        variant="contained"
+                        color="warning"
+                        onClick={() => (
+                          setOpenEditModal(true),
+                          setUpdateProduct({
+                            name: prod.name,
+                            description: prod.description,
+                            stock: prod.stock,
+                            price: prod.price,
+                            catId: prod.catId._id,
+                            image: prod.image,
+                          }),
+                          setEditedId(prod._id)
+                        )}
+                      >
                         Edit
                       </Button>
                       <Button
@@ -100,6 +136,96 @@ export default function DisplayProducts() {
         id={productId}
         deleteItem={deleteProduct}
       />
+      <Modal
+        open={openEditModal}
+        onClose={() => setOpenEditModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
+          <Typography variant="h6" component="h2">
+            Edit Product
+          </Typography>
+          <TextField
+            label="Name"
+            value={updatePorduct.name}
+            onChange={(e) =>
+              setUpdateProduct({ ...updatePorduct, name: e.target.value })
+            }
+          />
+          <TextField
+            label="Descirpiotn"
+            value={updatePorduct.description}
+            onChange={(e) =>
+              setUpdateProduct({
+                ...updatePorduct,
+                description: e.target.value,
+              })
+            }
+          />
+
+          <FormControl fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              label="Category"
+              value={updatePorduct.catId}
+              onChange={(e) =>
+                setUpdateProduct({ ...updatePorduct, catId: e.target.value })
+              }
+            >
+              {categories.map((cat) => {
+                return (
+                  <MenuItem key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Stock"
+            type="number"
+            value={updatePorduct.stock}
+            onChange={(e) =>
+              setUpdateProduct({ ...updatePorduct, stock: e.target.value })
+            }
+          />
+          <TextField
+            label="Price"
+            type="number"
+            value={updatePorduct.price}
+            onChange={(e) =>
+              setUpdateProduct({ ...updatePorduct, price: e.target.value })
+            }
+          />
+          <TextField
+            label="Image"
+            value={updatePorduct.image}
+            onChange={(e) =>
+              setUpdateProduct({ ...updatePorduct, image: e.target.value })
+            }
+          />
+          <Button variant="contained" onClick={() => handleUpdate()}>
+            Update
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
