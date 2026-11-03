@@ -8,6 +8,8 @@ import AdminDashboard from "./Components/Admin/AdminDashboard";
 import AdminLayout from "./Components/Admin/AdminLayout";
 import DisplayProducts from "./Components/Admin/Manage/ManageProducts/DisplayProducts";
 import DisplayCategories from "./Components/Admin/Manage/ManageCategories/DisplayCategories";
+import Contact from "./Components/Home/Contact";
+import ManageMessages from "./Components/Admin/Manage/ManageMessages/ManageMessages";
 function App() {
   return (
     <>
@@ -17,13 +19,14 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* admin layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index path="dashboard" element={<AdminDashboard />} />
           <Route path="manage-users" element={<AdminDashboard />} />
-          <Route path="manage-products" element={<DisplayProducts />} />
           <Route path="manage-categories" element={<DisplayCategories />} />
+          <Route path="manage-messages" element={<ManageMessages />} />
         </Route>
       </Routes>
     </>

@@ -41,7 +41,9 @@ export default function Header() {
               Register
             </IconButton>
             <IconButton>About</IconButton>
-            <IconButton>Contact</IconButton>
+            <IconButton onClick={() => navigate("/contact")}>
+              Contact
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
