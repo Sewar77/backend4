@@ -14,13 +14,16 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useProducts } from "../../../../Hooks/useProducts";
+import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import ConfirmDeleteModal from "../../AdminComponents/ConfirmDeleteModal";
 import AddProductsForm from "../../AdminComponents/AddPoructsForm";
 import { useCategories } from "../../../../Hooks/useCategories";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export default function DisplayProducts() {
   const { products, deleteProduct, editProduct } = useProducts();
   const { categories } = useCategories();
@@ -54,12 +57,14 @@ export default function DisplayProducts() {
           }}
         >
           <Typography variant="h3">Manage Products</Typography>
-          <Button
-            variant="contained"
-            onClick={() => setOpenAddForm(!openAddForm)}
-          >
-            {openAddForm ? "Cancel" : "Add Product"}
-          </Button>
+          <Tooltip title="add product throw getting a form to add new product ">
+            <Button
+              variant="contained"
+              onClick={() => setOpenAddForm(!openAddForm)}
+            >
+              {openAddForm ? "Cancel" : "Add Product"}
+            </Button>
+          </Tooltip>
         </Box>
         <Divider sx={{ p: 3 }}>Manage</Divider>
         {openAddForm && <AddProductsForm setOpenAddForm={setOpenAddForm} />}
@@ -93,34 +98,32 @@ export default function DisplayProducts() {
                     </TableCell>
                     <TableCell>{prod.image || "-----"}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="contained"
-                        color="warning"
-                        onClick={() => (
-                          setOpenEditModal(true),
-                          setUpdateProduct({
-                            name: prod.name,
-                            description: prod.description,
-                            stock: prod.stock,
-                            price: prod.price,
-                            catId: prod.catId._id,
-                            image: prod.image,
-                          }),
-                          setEditedId(prod._id)
-                        )}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => (
-                          setOpenModal(true),
-                          setProductId(prod._id)
-                        )}
-                      >
-                        Delete
-                      </Button>
+                      <Tooltip title="Update Product">
+                        <EditIcon
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => (
+                            setOpenEditModal(true),
+                            setUpdateProduct({
+                              name: prod.name,
+                              description: prod.description,
+                              stock: prod.stock,
+                              price: prod.price,
+                              catId: prod.catId._id,
+                              image: prod.image,
+                            }),
+                            setEditedId(prod._id)
+                          )}
+                        />
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <DeleteForeverIcon
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => (
+                            setOpenModal(true),
+                            setProductId(prod._id)
+                          )}
+                        />
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 );
