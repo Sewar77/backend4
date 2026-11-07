@@ -60,6 +60,7 @@ export default function Header() {
             <IconButton onClick={() => navigate("/register")}>
               Register
             </IconButton>
+<<<<<<< HEAD
             <Button onClick={() => setOpen(!open)}>
               <Tooltip title="Menu Items">
                 <MenuIcon />
@@ -92,6 +93,12 @@ export default function Header() {
                 <ListItem>Future</ListItem>
               </List>
             )}
+=======
+            <IconButton>About</IconButton>
+            <IconButton onClick={() => navigate("/contact")}>
+              Contact
+            </IconButton>
+>>>>>>> 0641199422e28eece6ae4326592d9ffde1c75901
           </Box>
         </Toolbar>
       </AppBar>
