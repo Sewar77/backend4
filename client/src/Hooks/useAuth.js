@@ -48,6 +48,11 @@ export const useAuth = () => {
             console.log(error);
         }
     };
-
-    return { register, login };
+    const logout = () => {
+        localStorage.removeItem("currentUser")
+        localStorage.removeItem("token")
+        toast.success("you logout successfully")
+        navigate('/')
+    }
+    return { register, login, logout };
 };

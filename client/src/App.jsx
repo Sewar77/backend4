@@ -8,6 +8,7 @@ import AdminDashboard from "./Components/Admin/AdminDashboard";
 import AdminLayout from "./Components/Admin/AdminLayout";
 import DisplayProducts from "./Components/Admin/Manage/ManageProducts/DisplayProducts";
 import DisplayCategories from "./Components/Admin/Manage/ManageCategories/DisplayCategories";
+import ManageUsers from "./Components/Admin/Manage/ManageUsers/ManageUsers";
 function App() {
   return (
     <>
@@ -21,7 +22,7 @@ function App() {
         {/* admin layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index path="dashboard" element={<AdminDashboard />} />
-          <Route path="manage-users" element={<AdminDashboard />} />
+          <Route path="manage-users" element={<ManageUsers />} />
           <Route path="manage-products" element={<DisplayProducts />} />
           <Route path="manage-categories" element={<DisplayCategories />} />
         </Route>

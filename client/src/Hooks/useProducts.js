@@ -47,7 +47,6 @@ export const useProducts = () => {
     // call the function everyminute
     useEffect(() => { //apply effect on the functions inside
         getAllProducts() // the effects is calling the function
-    }, [])
-
+    }, []) // generally
     return { products, deleteProduct, addProduct, editProduct }
 }

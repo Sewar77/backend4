@@ -5,6 +5,7 @@ export const getAllUsers = async (req, res) => {
         if (users.length === 0) {
             return res.status(200).json({ message: "no users yet", users: [] })
         }
+        console.log(users)
         return res.status(200).json({ message: "usrs gets", users })
     } catch (error) {
         console.log(error);

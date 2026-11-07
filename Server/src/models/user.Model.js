@@ -8,7 +8,6 @@ id, createdat, updated at
 
 */ import { Timestamp } from "mongodb";
 import mongoose from "mongoose";
-
 const userSchema = new mongoose.Schema(
     {
         name: {
@@ -38,7 +37,7 @@ const userSchema = new mongoose.Schema(
             default: "user",
         },
     },
-    { timestamp: true },
+    { timestamps: true }
 );
 const User = mongoose.model("User", userSchema)
 export default User
