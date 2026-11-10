@@ -3,7 +3,7 @@ import { useAuth } from "../../Hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
   return (
     <>
@@ -24,21 +24,31 @@ export default function Sidebar() {
             fontSize: "25px",
           }}
         >
-          <ListItemButton onClick={() => navigate("/admin/dashboard")}>
+          <ListItemButton
+            onClick={() => navigate(`/${currentUser.role}/dashboard`)}
+          >
             Dashboard
           </ListItemButton>
-          <ListItemButton onClick={() => navigate("/admin/manage-users")}>
-            Manage User
-          </ListItemButton>
-          <ListItemButton onClick={() => navigate("/admin/manage-products")}>
+          {currentUser && currentUser.role === "admin" && (
+            <ListItemButton onClick={() => navigate("/admin/manage-users")}>
+              Manage User
+            </ListItemButton>
+          )}
+          <ListItemButton
+            onClick={() => navigate(`/${currentUser.role}/manage-products`)}
+          >
             Manage Profucts
           </ListItemButton>
-          <ListItemButton onClick={() => navigate("/admin/manage-categories")}>
+          <ListItemButton
+            onClick={() => navigate(`/${currentUser.role}/manage-categories`)}
+          >
             Manage Categories
           </ListItemButton>
-          <ListItemButton onClick={() => navigate("/admin/manage-messages")}>
-            Manage Messages
-          </ListItemButton>
+          {currentUser && currentUser.role === "admin" && (
+            <ListItemButton onClick={() => navigate("/admin/manage-messages")}>
+              Manage Messages
+            </ListItemButton>
+          )}
           <ListItemButton>Manage Profile</ListItemButton>
           <ListItemButton onClick={() => logout()}>Logout</ListItemButton>
         </List>

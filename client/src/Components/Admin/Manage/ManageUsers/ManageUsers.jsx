@@ -35,6 +35,7 @@ export default function ManageUsers() {
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Role</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Registered At</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
@@ -47,6 +48,7 @@ export default function ManageUsers() {
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role}</TableCell>
+                    <TableCell>{user.status}</TableCell>
                     <TableCell>{user.createdAt}</TableCell>
                     <TableCell>
                       <Button>Edit</Button>

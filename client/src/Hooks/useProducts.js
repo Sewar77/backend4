@@ -3,12 +3,22 @@ import api from "../api"
 import toast from "react-hot-toast"
 export const useProducts = () => {
     const [products, setProucts] = useState([])
+    const [approvedProducts, setApprovedProucts] = useState([])
 
     //getallproducts
     const getAllProducts = async () => {
         try {
             const res = await api.get('/products'); // read from backend 
             setProucts(res.data.products)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
+    const getAllApprovedProducts = async () => {
+        try {
+            const res = await api.get('/accepted/products'); // read from backend 
+            setApprovedProucts(res.data.products)
         } catch (error) {
             toast.error(error.response?.data?.message)
             console.log(error.response?.data?.message)
@@ -46,7 +56,7 @@ export const useProducts = () => {
     }
     // call the function everyminute
     useEffect(() => { //apply effect on the functions inside
-        getAllProducts() // the effects is calling the function
+        getAllApprovedProducts() // the effects is calling the function
     }, []) // generally
-    return { products, deleteProduct, addProduct, editProduct }
+    return { products, deleteProduct, addProduct, editProduct, getAllProducts, approvedProducts }
 }

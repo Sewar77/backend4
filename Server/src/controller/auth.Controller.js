@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 export const createUser = async (req, res) => {
     try {
-        const { name, email, password, confirmPassword } = req.body
+        const { name, email, password, confirmPassword, role } = req.body
         if (!name || !email || !password || !confirmPassword) {
             return res.status(400).json({ message: "all fields are requiered!" })
         }
@@ -30,7 +30,12 @@ export const createUser = async (req, res) => {
             return res.status(400).json({ message: "password must include small letters , capital letters, numers and symbols, and min length is 8" })
         }
         const hashed_password = await bcrypt.hash(password, 10)
-        const user = await User.create({ name, email, hashed_password })
+        let status = "pending"
+        if (role === "user") {
+            status = "approved"
+        }
+
+        const user = await User.create({ name, email, hashed_password, role, status })
         if (!user) {
             return res.status(400).json({ message: "could not register" })
         }
@@ -59,7 +64,8 @@ export const login = async (req, res) => {
         const user = {
             role: isExist.role,
             id: isExist._id,
-            name: isExist.name
+            name: isExist.name,
+            status: isExist.status
         }
         const token = jwt.sign( //give teh tokens value=> user: id, role, name
             user,

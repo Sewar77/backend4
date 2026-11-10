@@ -1,4 +1,15 @@
-import { Button, Container, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Paper,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useAuth } from "../../Hooks/useAuth";
 
@@ -8,6 +19,7 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
   });
   console.log(userData);
   const { register } = useAuth();
@@ -53,6 +65,23 @@ export default function Register() {
               setUserData({ ...userData, confirmPassword: e.target.value })
             }
           />
+          <FormControl>
+            <FormLabel>What Are you?</FormLabel>
+            <RadioGroup
+              onChange={(e) =>
+                setUserData({ ...userData, role: e.target.value })
+              }
+              row
+              name="row-radio-buttons-group"
+            >
+              <FormControlLabel value="user" control={<Radio />} label="User" />
+              <FormControlLabel
+                value="trader"
+                control={<Radio />}
+                label="Trader"
+              />
+            </RadioGroup>
+          </FormControl>{" "}
           <Button variant="contained" onClick={() => register(userData)}>
             Register
           </Button>

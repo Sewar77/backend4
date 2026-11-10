@@ -47,7 +47,15 @@ create steps:
       return res.status(409).json({ message: "this category name is already exist!" })
     } // 409 - conflict
     //create:
-    const category = await Category.create({ name, description });
+    let status = "pending"
+    if (req.user === "admin") {
+      status = "approved"
+    }
+    const id = req.user.id
+    const category = await Category.create({
+      name, description, status, createdBy: id,
+      updatedBy: id,
+    });
     if (!category) {
       return res
         .status(400)

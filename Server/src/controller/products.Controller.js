@@ -5,6 +5,8 @@ export const createProduct = async (req, res) => {
     try {
         //read data
         const { name, description, image, price, stock, catId } = req.body;
+        console.log(req.body);
+
         //validation
         if (!name || !catId || !price || !stock) {
             return res.status(400).json({
@@ -21,14 +23,16 @@ export const createProduct = async (req, res) => {
             return res.status(404).json({ message: "category name is no found!" });
         }
         if (price <= 0 || stock < 0) {
-            return res
-                .status(400)
-                .json({
-                    message:
-                        "stock and price must be a valid positive number and more than 0",
-                });
+            return res.status(400).json({
+                message:
+                    "stock and price must be a valid positive number and more than 0",
+            });
         }
-
+        let status = "pending";
+        if (req.user === "admin") {
+            status = "accepted";
+        }
+        const id = req.user.id;
         const product = await Product.create({
             name,
             description,
@@ -36,7 +40,10 @@ export const createProduct = async (req, res) => {
             price,
             stock,
             catId,
-        })
+            status,
+            createdBy: id,
+            updatedBy: id,
+        });
         if (!product) {
             return res
                 .status(400)
@@ -65,6 +72,21 @@ export const getAllProducts = async (req, res) => {
 };
 
 //read by id
+export const getApprovedProduct = async (req, res) => {
+    try {
+        const products = await Product.find({
+            status: "accepted",
+        }).populate("catId", "name description");
+        if (products.length === 0) {
+            return res.status(200).json({ message: "No products yet", products: [] });
+        }
+        return res.status(200).json({ message: " products get", products });
+        //data
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+};
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -127,11 +149,9 @@ export const updateProduct = async (req, res) => {
         }
 
         if (price <= 0 || stock < 0) {
-            return res
-                .status(400)
-                .json({
-                    message: "the price and strock must be valid positive numbers",
-                });
+            return res.status(400).json({
+                message: "the price and strock must be valid positive numbers",
+            });
         }
         const product = await Product.findByIdAndUpdate(
             id,
@@ -142,7 +162,7 @@ export const updateProduct = async (req, res) => {
                 runValidators: true,
                 timestamps: true,
             },
-        )
+        );
         if (!product) {
             return res
                 .status(400)

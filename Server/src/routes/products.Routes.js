@@ -3,6 +3,7 @@ import {
     createProduct,
     deleteProduct,
     getAllProducts,
+    getApprovedProduct,
     getProductByCatId,
     getProductById,
     updateProduct,
@@ -12,8 +13,9 @@ import { adminOnly } from "../middleware/adminOnly.Middleware.js";
 
 const router = express.Router();
 
-router.post("/product", protect, adminOnly, createProduct);
-router.get("/products", getAllProducts);
+router.post("/product", protect, createProduct);
+router.get("/products", protect, adminOnly, getAllProducts); //this is for admin
+router.get("/accepted/products", getApprovedProduct);
 router.get("/product/:id", getProductById);
 router.get("/product/:id/category", getProductByCatId);
 router.put("/product/:id", protect, adminOnly, updateProduct);

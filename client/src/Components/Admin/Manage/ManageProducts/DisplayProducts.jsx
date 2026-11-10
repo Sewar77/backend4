@@ -19,13 +19,18 @@ import {
 } from "@mui/material";
 import { useProducts } from "../../../../Hooks/useProducts";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmDeleteModal from "../../AdminComponents/ConfirmDeleteModal";
 import AddProductsForm from "../../AdminComponents/AddPoructsForm";
 import { useCategories } from "../../../../Hooks/useCategories";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useTrader } from "../../../../Hooks/useTrader";
+import { useAuth } from "../../../../Hooks/useAuth";
 export default function DisplayProducts() {
-  const { products, deleteProduct, editProduct } = useProducts();
+  const { products, deleteProduct, editProduct, getAllProducts } =
+    useProducts();
+  const { getTraderProducts, productsTrader } = useTrader();
+  const { currentUser } = useAuth();
   const { categories } = useCategories();
   const [openModal, setOpenModal] = useState(false);
   const [productId, setProductId] = useState(null);
@@ -46,6 +51,16 @@ export default function DisplayProducts() {
     editProduct(editedId, updatePorduct);
     setOpenEditModal(false);
   };
+  let mappingProducts = [];
+  useEffect(() => {
+    (getAllProducts(), getTraderProducts());
+  }, []);
+
+  if (currentUser.role === "admin") {
+    mappingProducts = [...products];
+  } else {
+    mappingProducts = [...productsTrader];
+  }
   return (
     <>
       <Box sx={{ my: 3 }}>
@@ -84,7 +99,7 @@ export default function DisplayProducts() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((prod, idx) => {
+              {mappingProducts.map((prod, idx) => {
                 return (
                   <TableRow key={prod._id}>
                     <TableCell>{idx + 1}</TableCell>

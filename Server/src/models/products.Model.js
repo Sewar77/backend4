@@ -37,6 +37,15 @@ const productSchema = new mongoose.Schema({
         // accepted, pending, rejected
         enum: ['accepted', 'pending', 'rejected'],
         default: 'accepted',
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "User is Required"]
+    },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     }
 },
     { timestamps: true }

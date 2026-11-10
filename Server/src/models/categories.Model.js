@@ -20,6 +20,20 @@ const categorySchema = new mongoose.Schema(
             type: String,
             trim: true
         },
+        status: {
+            type: String,
+            enum: ["pending", "approved", "rejected"],
+            default: "pending",
+        },
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: [true, "Category Name is Required"]
+        },
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        }
     },
     {
         timestamps: true
