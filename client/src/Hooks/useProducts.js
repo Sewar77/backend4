@@ -28,7 +28,7 @@ export const useProducts = () => {
         try {
             const res = await api.post('/product', product)
             toast.success(res.data.message)
-            getAllProducts()
+
         } catch (error) {
             toast.error(error.response?.data?.message)
             console.log(error.response?.data?.message)
@@ -38,7 +38,7 @@ export const useProducts = () => {
         try {
             const res = await api.delete(`/product/${id}`);
             toast.success(res.data.message)
-            getAllProducts() //refresh table after delete
+            // getAllProducts() //refresh table after delete
         } catch (error) {
             toast.error(error.response?.data?.message)
             console.log(error.response?.data?.message)
@@ -48,7 +48,16 @@ export const useProducts = () => {
         try {
             const res = await api.put(`/product/${id}`, product);
             toast.success(res.data.message)
-            getAllProducts() //refresh table after delete
+            // getAllProducts() //refresh table after delete
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
+    const editProductStatus = async (id, status) => {
+        try {
+            const res = await api.put(`/product-status/${id}`, { status });
+            toast.success(res.data.message)
         } catch (error) {
             toast.error(error.response?.data?.message)
             console.log(error.response?.data?.message)
@@ -58,5 +67,5 @@ export const useProducts = () => {
     useEffect(() => { //apply effect on the functions inside
         getAllApprovedProducts() // the effects is calling the function
     }, []) // generally
-    return { products, deleteProduct, addProduct, editProduct, getAllProducts, approvedProducts }
+    return { products, deleteProduct, addProduct, editProduct, getAllProducts, approvedProducts, editProductStatus }
 }

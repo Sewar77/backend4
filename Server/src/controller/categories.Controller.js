@@ -149,9 +149,42 @@ export const updateCategory = async (req, res) => {
     if (isExist) { //is exist => true, means found
       return res.status(409).json({ message: "this category name is already exist!" })
     }
+    const cat = await Category.findById(id)
+    const role = req.user.role
+    let status = cat.status
+
+    if (role === "trader") {
+      status = "pending"
+    }
     const category = await Category.findByIdAndUpdate(
       id,
-      { name, description },
+      { name, description, status },
+      {
+        new: true,
+        runValidators: true,
+        timestamps: true //update the time 
+      }
+    )
+    if (!category) {
+      return res.status(404).json({ message: "something went wrong while updating! item not found" })
+    }
+    return res.status(200).json({ message: "updated successfully", category })
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "internal server error" });
+  }
+}
+export const updateCategoryStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const { id } = req.params
+    if (!id) {
+      return res.status(400).json({ message: "item not seleteced!" })
+    }
+    const category = await Category.findByIdAndUpdate(
+      id,
+      { status },
       {
         new: true,
         runValidators: true,

@@ -17,6 +17,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { useProducts } from "../../../../Hooks/useProducts";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
@@ -27,11 +29,16 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useTrader } from "../../../../Hooks/useTrader";
 import { useAuth } from "../../../../Hooks/useAuth";
 export default function DisplayProducts() {
-  const { products, deleteProduct, editProduct, getAllProducts } =
-    useProducts();
+  const {
+    products,
+    deleteProduct,
+    editProduct,
+    getAllProducts,
+    editProductStatus,
+  } = useProducts();
   const { getTraderProducts, productsTrader } = useTrader();
   const { currentUser } = useAuth();
-  const { categories } = useCategories();
+  const { categories, getAllCategories } = useCategories();
   const [openModal, setOpenModal] = useState(false);
   const [productId, setProductId] = useState(null);
   const [openAddForm, setOpenAddForm] = useState(false);
@@ -47,18 +54,22 @@ export default function DisplayProducts() {
     image: "",
   });
   const handleUpdate = () => {
-    console.log(updatePorduct);
     editProduct(editedId, updatePorduct);
     setOpenEditModal(false);
   };
   let mappingProducts = [];
   useEffect(() => {
-    (getAllProducts(), getTraderProducts());
+    getAllCategories();
   }, []);
-
   if (currentUser.role === "admin") {
+    useEffect(() => {
+      getAllProducts();
+    }, []);
     mappingProducts = [...products];
   } else {
+    useEffect(() => {
+      getTraderProducts();
+    }, []);
     mappingProducts = [...productsTrader];
   }
   return (
@@ -93,6 +104,7 @@ export default function DisplayProducts() {
                 <TableCell>Category</TableCell>
                 <TableCell>Stock</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Created At</TableCell>
                 <TableCell>Image</TableCell>
                 <TableCell>Actions</TableCell>
@@ -108,6 +120,7 @@ export default function DisplayProducts() {
                     <TableCell>{prod?.catId?.name || "------"}</TableCell>
                     <TableCell>{prod.stock}</TableCell>
                     <TableCell>{prod.price}</TableCell>
+                    <TableCell>{prod.status}</TableCell>
                     <TableCell>
                       {new Date(prod.createdAt).toLocaleString()}
                     </TableCell>
@@ -139,6 +152,24 @@ export default function DisplayProducts() {
                           )}
                         />
                       </Tooltip>
+                      {currentUser.role === "admin" && (
+                        <>
+                          <Button
+                            onClick={() =>
+                              editProductStatus(prod._id, "rejected")
+                            }
+                          >
+                            <ThumbDownAltIcon />
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              editProductStatus(prod._id, "accepted")
+                            }
+                          >
+                            <ThumbUpIcon />
+                          </Button>
+                        </>
+                      )}
                     </TableCell>
                   </TableRow>
                 );

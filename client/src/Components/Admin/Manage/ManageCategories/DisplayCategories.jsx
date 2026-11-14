@@ -12,16 +12,29 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { useState } from "react";
 import ConfirmDeleteModal from "../../AdminComponents/ConfirmDeleteModal";
 import { useCategories } from "../../../../Hooks/useCategories";
 import AddCategoryForm from "../../AdminComponents/AddCategoryForm";
+import { useTrader } from "../../../../Hooks/useTrader";
+import { useEffect } from "react";
+import { useAuth } from "../../../../Hooks/useAuth";
 export default function DisplayCategories() {
-  const { categories, deleteCategory, updateCategory } = useCategories();
+  const {
+    categories,
+    deleteCategory,
+    updateCategory,
+    getAllCategories,
+    updateCategoryStatus,
+  } = useCategories();
   const [openModal, setOpenModal] = useState(false);
-
+  const { getTraderCategories, categoriesTrader } = useTrader();
   const [catId, setCatId] = useState(null);
 
+  const { currentUser } = useAuth();
+  console.log(currentUser);
   //state to open add form
   const [openForm, setOpenForm] = useState(false);
 
@@ -32,12 +45,23 @@ export default function DisplayCategories() {
     name: "",
     description: "", //the old or the new
   });
-  console.log(updatedCategory);
-
   const handleSaveEdit = () => {
     updateCategory(catIdUpdate, updatedCategory);
     setCatIdUpdate(null);
   };
+  let mappingCategories = [];
+
+  if (currentUser.role === "admin") {
+    useEffect(() => {
+      getAllCategories();
+    }, []);
+    mappingCategories = [...categories];
+  } else {
+    useEffect(() => {
+      getTraderCategories();
+    }, []);
+    mappingCategories = [...categoriesTrader];
+  }
   return (
     <>
       <Box sx={{ my: 3 }}>
@@ -62,12 +86,13 @@ export default function DisplayCategories() {
                 <TableCell>#</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Created At</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map((cat, idx) => {
+              {mappingCategories.map((cat, idx) => {
                 return (
                   <TableRow key={cat._id}>
                     <TableCell>{idx + 1}</TableCell>
@@ -103,6 +128,7 @@ export default function DisplayCategories() {
                         cat.description
                       )}
                     </TableCell>
+                    <TableCell>{cat.status}</TableCell>
                     <TableCell>
                       {new Date(cat.createdAt).toLocaleString()}
                     </TableCell>
@@ -138,6 +164,24 @@ export default function DisplayCategories() {
                       >
                         Delete
                       </Button>
+                      {currentUser.role === "admin" && (
+                        <>
+                          <Button
+                            onClick={() =>
+                              updateCategoryStatus(cat._id, "rejected")
+                            }
+                          >
+                            <ThumbDownAltIcon />
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              updateCategoryStatus(cat._id, "approved")
+                            }
+                          >
+                            <ThumbUpIcon />
+                          </Button>
+                        </>
+                      )}
                     </TableCell>
                   </TableRow>
                 );

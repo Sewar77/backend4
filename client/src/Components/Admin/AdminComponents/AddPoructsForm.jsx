@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProducts } from "../../../Hooks/useProducts";
 import { useCategories } from "../../../Hooks/useCategories";
 
@@ -27,8 +27,10 @@ export default function AddProductsForm({ setOpenAddForm }) {
     addProduct(product);
     setOpenAddForm(false);
   };
-  const { categories } = useCategories();
-
+  const { categories, getAllCategories } = useCategories();
+  useEffect(() => {
+    getAllCategories();
+  }, []);
   return (
     <>
       <Container sx={{ my: "auto" }}>

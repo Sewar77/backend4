@@ -4,6 +4,7 @@ import api from "../api";
 
 export const useTrader = () => {
     const [productsTrader, setProductsTrader] = useState([])
+    const [categoriesTrader, setCategoriesTrader] = useState([])
 
     const getTraderProducts = async () => {
         try {
@@ -14,6 +15,14 @@ export const useTrader = () => {
             console.log(error)
         }
     }
-
-    return { getTraderProducts, productsTrader }
+    const getTraderCategories = async () => {
+        try {
+            const res = await api.get('/trader/categories'); // read from backend 
+            setCategoriesTrader(res.data.categories)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error)
+        }
+    }
+    return { getTraderProducts, productsTrader, getTraderCategories, categoriesTrader }
 }

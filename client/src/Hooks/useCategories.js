@@ -17,7 +17,7 @@ export const useCategories = () => {
     try {
       const res = await api.delete(`/category/${id}`);
       toast.success(res.data.message);
-      getAllCategories();
+      // getAllCategories();
     } catch (error) {
       toast.error(error.response?.data?.message);
       console.log(error.response?.data?.message);
@@ -27,7 +27,7 @@ export const useCategories = () => {
     try {
       const res = await api.post("/category", category);
       toast.success(res.data.message);
-      getAllCategories(); //refresh
+      // getAllCategories(); //refresh
     } catch (error) {
       toast.error(error.response?.data?.message);
       console.log(error.response?.data?.message);
@@ -37,14 +37,22 @@ export const useCategories = () => {
     try {
       const res = await api.put(`/category/${id}`, newCategoery);
       toast.success(res.data.message);
-      getAllCategories();
+      // getAllCategories();
     } catch (error) {
       toast.error(error.response?.data?.message);
       console.log(error.response?.data?.message);
     }
   };
-  useEffect(() => {
-    getAllCategories();
-  }, []);
-  return { categories, deleteCategory, addCategory, updateCategory };
+  const updateCategoryStatus = async (id, status) => {
+    try {
+      const res = await api.put(`/category-status/${id}`, { status });
+      toast.success(res.data.message);
+      // getAllCategories();
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  return { categories, deleteCategory, addCategory, updateCategory, getAllCategories, updateCategoryStatus };
 };

@@ -153,10 +153,17 @@ export const updateProduct = async (req, res) => {
                 message: "the price and strock must be valid positive numbers",
             });
         }
+        const cat = await Product.findById(id)
+        const role = req.user.role
+        let status = cat.status
+
+        if (role === "trader") {
+            status = "pending"
+        }
         const product = await Product.findByIdAndUpdate(
             id,
 
-            { name, description, image, price, stock, catId },
+            { name, description, image, price, stock, catId, status },
             {
                 new: true,
                 runValidators: true,
@@ -174,6 +181,34 @@ export const updateProduct = async (req, res) => {
         return res.status(500).json({ message: "internal server error" });
     }
 };
+
+export const updateProductsStatus = async (req, res) => {
+    try {
+        const { status } = req.body;
+        console.log(status)
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ message: "item not seleteced!" })
+        }
+        const product = await Product.findByIdAndUpdate(
+            id,
+            { status },
+            {
+                new: true,
+                runValidators: true,
+                timestamps: true //update the time 
+            }
+        )
+        if (!product) {
+            return res.status(404).json({ message: "something went wrong while updating! item not found" })
+        }
+        return res.status(200).json({ message: "updated successfully", product })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+}
 
 export const deleteProduct = async (req, res) => {
     try {
