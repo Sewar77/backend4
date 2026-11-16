@@ -13,6 +13,7 @@ import Contact from "./Components/Home/Contact";
 import ManageMessages from "./Components/Admin/Manage/ManageMessages/ManageMessages";
 import TraderLayout from "./Components/Trader/TrdaerLayout";
 import TrdaerDashboard from "./Components/Trader/TraderDashboard";
+import ChangePassword from "./Components/Shared/ChangePassword";
 function App() {
   return (
     <>
@@ -23,10 +24,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="change-password" element={<ChangePassword />} />
 
         <Route path="/trader" element={<TraderLayout />}>
           <Route index path="dashboard" element={<TrdaerDashboard />} />
           <Route path="manage-products" element={<DisplayProducts />} />
+          <Route path="change-password" element={<ChangePassword />} />
           <Route path="manage-categories" element={<DisplayCategories />} />
         </Route>
 
@@ -37,6 +40,7 @@ function App() {
           <Route path="manage-products" element={<DisplayProducts />} />
           <Route path="manage-categories" element={<DisplayCategories />} />
           <Route path="manage-messages" element={<ManageMessages />} />
+          <Route path="change-password" element={<ChangePassword />} />
         </Route>
       </Routes>
     </>

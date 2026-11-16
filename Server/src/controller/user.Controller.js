@@ -1,4 +1,6 @@
 import User from "../models/user.Model.js";
+import bcrypt from "bcrypt";
+
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select("-hashed_password");
@@ -93,7 +95,7 @@ export const deleteUser = async (req, res) => {
 export const editProfileByAdmin = async (req, res) => {
     try {
         const { newRole, newStatus } = req.body;
-        console.log(req.body)
+        console.log(req.body);
         console.log(newRole, newStatus);
 
         const { id } = req.params;
@@ -114,7 +116,52 @@ export const editProfileByAdmin = async (req, res) => {
             },
         );
         return res.status(200).json({ message: "updated successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+};
+export const changePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword, confirmNewPassword } = req.body;
+        const { id } = req.user; //who own the account
 
+        const userInfo = await User.findById(id);
+        const isMatch = await bcrypt.compare(oldPassword, userInfo.hashed_password)
+        if (!isMatch) {
+            return res.status(400).json({ message: "old password is not correct!" });
+        }
+        if (newPassword !== confirmNewPassword) {
+            return res.status(400).json({ message: "passwords do not match!" });
+        }
+        if (oldPassword === newPassword) {
+            return res
+                .status(400)
+                .json({ message: "new password must not be the old password!" });
+        }
+        const validPassword =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!validPassword.test(newPassword)) {
+            return res.status(400).json({
+                message:
+                    "password must include small letters , capital letters, numers and symbols, and min length is 8",
+            });
+        }
+        const hashed_password = await bcrypt.hash(newPassword, 10);
+        const updaredPass = await User.findByIdAndUpdate(
+            id,
+            {
+                hashed_password,
+            },
+            {
+                new: true,
+                runValidators: true,
+                timestamps: true,
+            },
+        );
+        return res.status(200).json({
+            message: "password changes suuccessfully",
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });

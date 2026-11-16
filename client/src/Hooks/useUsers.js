@@ -25,6 +25,15 @@ export const useUsers = () => {
             console.log(error.response?.data?.message)
         }
     }
+    const changeUserPassword = async (oldPassword, newPassword, confirmNewPassword) => {
+        try {
+            const res = await api.put(`/change-password`, { oldPassword, newPassword, confirmNewPassword });
+            toast.success(res.data.message)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
     const editUser = async (id, newRole, newStatus) => {
         try {
             const res = await api.put(`/user-update/${id}`, { newRole, newStatus }); // read from backend 
@@ -35,5 +44,5 @@ export const useUsers = () => {
             console.log(error.response?.data?.message)
         }
     }
-    return { getAllUsers, users, deleteUser, editUser }
+    return { getAllUsers, users, deleteUser, editUser, changeUserPassword }
 } 

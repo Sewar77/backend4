@@ -14,10 +14,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { useAuth } from "../../Hooks/useAuth";
 export default function Header() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  console.log(open);
+  const { currentUser } = useAuth();
   return (
     <>
       <AppBar position="relative">
@@ -53,6 +54,7 @@ export default function Header() {
             }}
           >
             <IconButton onClick={() => navigate("/")}>Home</IconButton>
+
             <IconButton onClick={() => navigate("/products")}>
               Products
             </IconButton>
@@ -82,7 +84,15 @@ export default function Header() {
                     Contact
                   </ListItemButton>
                 </ListItem>
-                <ListItem>Careers</ListItem>
+                {currentUser !== null && (
+                  <ListItem>
+                    <ListItemButton
+                      onClick={() => navigate("/change-password")}
+                    >
+                      actions
+                    </ListItemButton>
+                  </ListItem>
+                )}
                 <ListItem>AI</ListItem>
                 <ListItem>Future</ListItem>
                 <ListItem>Future</ListItem>

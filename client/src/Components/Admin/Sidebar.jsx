@@ -50,6 +50,11 @@ export default function Sidebar() {
             </ListItemButton>
           )}
           <ListItemButton>Manage Profile</ListItemButton>
+          <ListItemButton
+            onClick={() => navigate(`/${currentUser.role}/change-password`)}
+          >
+            Change Password
+          </ListItemButton>
           <ListItemButton onClick={() => logout()}>Logout</ListItemButton>
         </List>
       </Box>
