@@ -1,17 +1,17 @@
-import User from "../models/user.Model.js"
+import User from "../models/user.Model.js";
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find().select("-hashed_password")
+        const users = await User.find().select("-hashed_password");
         if (users.length === 0) {
-            return res.status(200).json({ message: "no users yet", users: [] })
+            return res.status(200).json({ message: "no users yet", users: [] });
         }
-        console.log(users)
-        return res.status(200).json({ message: "usrs gets", users })
+        console.log(users);
+        return res.status(200).json({ message: "usrs gets", users });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
     }
-}
+};
 
 export const getUserById = async (req, res) => {
     try {
@@ -19,7 +19,7 @@ export const getUserById = async (req, res) => {
         if (!id) {
             return res.status(400).json({ message: "no user selected!" });
         }
-        const user = await User.findById(id).select("-hashed_password")
+        const user = await User.findById(id).select("-hashed_password");
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
@@ -28,14 +28,14 @@ export const getUserById = async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
     }
-}
+};
 export const getUserByEmail = async (req, res) => {
     try {
         const { email } = req.body;
         if (!email) {
             return res.status(400).json({ message: "no email selected!" });
         }
-        const user = await User.findOne({ email }).select("-hashed_password")
+        const user = await User.findOne({ email }).select("-hashed_password");
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
@@ -44,7 +44,7 @@ export const getUserByEmail = async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
     }
-}
+};
 
 export const updateUserProfile = async (req, res) => {
     try {
@@ -61,7 +61,7 @@ export const updateUserProfile = async (req, res) => {
                 runValidators: true,
                 timestamps: true,
             },
-        )
+        );
         if (!user) {
             return res
                 .status(400)
@@ -85,6 +85,36 @@ export const deleteUser = async (req, res) => {
             return res.status(404).json({ message: "item not found" });
         }
         return res.status(200).json({ message: "item deleted" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+};
+export const editProfileByAdmin = async (req, res) => {
+    try {
+        const { newRole, newStatus } = req.body;
+        console.log(req.body)
+        console.log(newRole, newStatus);
+
+        const { id } = req.params;
+
+        const isExist = await User.findById(id);
+        if (!isExist) {
+            return res.status(404).json({ message: "user is not found" });
+        }
+        let role = newRole || isExist.role;
+        let status = newStatus || isExist.status;
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { role, status },
+            {
+                new: true,
+                runValidators: true,
+                timestamps: true,
+            },
+        );
+        return res.status(200).json({ message: "updated successfully" });
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });

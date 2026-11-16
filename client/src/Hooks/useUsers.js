@@ -25,5 +25,15 @@ export const useUsers = () => {
             console.log(error.response?.data?.message)
         }
     }
-    return { getAllUsers, users, deleteUser }
+    const editUser = async (id, newRole, newStatus) => {
+        try {
+            const res = await api.put(`/user-update/${id}`, { newRole, newStatus }); // read from backend 
+            getAllUsers() // refresh
+            toast.success(res.data.message)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
+    return { getAllUsers, users, deleteUser, editUser }
 } 
