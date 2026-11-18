@@ -78,3 +78,17 @@ export const login = async (req, res) => {
         return res.status(500).json({ message: "internal server error" });
     }
 }
+
+export const authMe = async (req, res) => {
+    try {
+        const { id } = req.user
+        const currentUser = await User.findById(id)
+        if (!currentUser) {
+            return res.status(403).json({ message: "no user login" })
+        }
+        return res.status(200).json({ currentUser })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+}

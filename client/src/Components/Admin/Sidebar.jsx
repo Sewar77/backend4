@@ -49,13 +49,20 @@ export default function Sidebar() {
               Manage Messages
             </ListItemButton>
           )}
-          <ListItemButton>Manage Profile</ListItemButton>
+          <ListItemButton
+            onClick={() => navigate(`/${currentUser.role}/profile`)}
+          >
+            Manage Profile
+          </ListItemButton>
           <ListItemButton
             onClick={() => navigate(`/${currentUser.role}/change-password`)}
           >
             Change Password
           </ListItemButton>
           <ListItemButton onClick={() => logout()}>Logout</ListItemButton>
+          <ListItemButton onClick={() => navigate(`/`)}>
+            Preview Website
+          </ListItemButton>
         </List>
       </Box>
     </>

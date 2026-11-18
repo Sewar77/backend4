@@ -19,6 +19,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { currentUser } = useAuth();
+  console.log(currentUser);
   return (
     <>
       <AppBar position="relative">
@@ -53,15 +54,32 @@ export default function Header() {
               flexWrap: "wrap",
             }}
           >
+            {Object.keys(currentUser).length !== 0 &&
+              currentUser.role !== "user" && (
+                <IconButton
+                  onClick={() => navigate(`/${currentUser.role}/dashboard`)}
+                >
+                  Dashboard
+                </IconButton>
+              )}
+
             <IconButton onClick={() => navigate("/")}>Home</IconButton>
 
             <IconButton onClick={() => navigate("/products")}>
               Products
             </IconButton>
-            <IconButton onClick={() => navigate("/login")}>Login</IconButton>
-            <IconButton onClick={() => navigate("/register")}>
-              Register
-            </IconButton>
+            {Object.keys(currentUser).length !== 0 ? (
+              <IconButton onClick={() => navigate("/login")}>Logout</IconButton>
+            ) : (
+              <>
+                <IconButton onClick={() => navigate("/login")}>
+                  Login
+                </IconButton>
+                <IconButton onClick={() => navigate("/register")}>
+                  Register
+                </IconButton>
+              </>
+            )}
             <Button onClick={() => setOpen(!open)}>
               <Tooltip title="Menu Items">
                 <MenuIcon />

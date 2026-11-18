@@ -13,8 +13,7 @@ import {
 } from "@mui/material";
 import Header from "../Shared/Header";
 export default function Products() {
-  const { products } = useProducts();
-
+  const { approvedProducts } = useProducts();
   return (
     <>
       <Header />
@@ -22,7 +21,10 @@ export default function Products() {
         <Typography variant="h1">Products</Typography>
         <Divider sx={{ p: 2 }}>Explore</Divider>
         <Grid container spacing={4}>
-          {products.map((product) => {
+          {approvedProducts.length === 0 && (
+            <Typography variant="h4">No products in DB</Typography>
+          )}
+          {approvedProducts.map((product) => {
             return (
               <Grid
                 key={product._id}
