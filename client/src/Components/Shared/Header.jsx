@@ -18,7 +18,7 @@ import { useAuth } from "../../Hooks/useAuth";
 export default function Header() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   console.log(currentUser);
   return (
     <>
@@ -69,7 +69,7 @@ export default function Header() {
               Products
             </IconButton>
             {Object.keys(currentUser).length !== 0 ? (
-              <IconButton onClick={() => navigate("/login")}>Logout</IconButton>
+              <IconButton onClick={() => logout()}>Logout</IconButton>
             ) : (
               <>
                 <IconButton onClick={() => navigate("/login")}>

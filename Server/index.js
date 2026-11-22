@@ -10,6 +10,7 @@ import authRoutes from "./src/routes/auth.Routes.js";
 import userRoutes from "./src/routes/user.Routes.js";
 import messageRoutes from "./src/routes/message.Routes.js";
 import traderRoutes from "./src/routes/trader.Routes.js"
+import cartRoutes from "./src/routes/cart.Routes.js"
 // extensions in server imports are so important.
 //the dotenv config
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", messageRoutes);
 app.use("/api", traderRoutes);
+app.use("/api", cartRoutes);
 
 // localhost:3000/api
 const port = process.env.PORT; // read from env file

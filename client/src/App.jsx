@@ -15,6 +15,7 @@ import TraderLayout from "./Components/Trader/TrdaerLayout";
 import TrdaerDashboard from "./Components/Trader/TraderDashboard";
 import ChangePassword from "./Components/Shared/ChangePassword";
 import Profile from "./Components/Profile/Profile";
+import Cart from "./Components/Cart/Cart";
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="change-password" element={<ChangePassword />} />
 
         <Route path="/trader" element={<TraderLayout />}>

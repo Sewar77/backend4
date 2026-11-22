@@ -12,8 +12,25 @@ import {
   Typography,
 } from "@mui/material";
 import Header from "../Shared/Header";
+import { useAuth } from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../../Hooks/useCart";
 export default function Products() {
   const { approvedProducts } = useProducts();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (productId) => {
+    if (Object.keys(currentUser).length === 0) {
+      toast("Please login so you can use the cart");
+      navigate("/login");
+    } else {
+      addToCart({ productId, quantity: 1 });
+    }
+  };
+
   return (
     <>
       <Header />
@@ -52,7 +69,12 @@ export default function Products() {
                       justifyContent: "center",
                     }}
                   >
-                    <Button variant="contained">Add to cart</Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleAddToCart(product._id)}
+                    >
+                      Add to cart
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>
