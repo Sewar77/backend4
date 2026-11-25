@@ -75,7 +75,7 @@ export const login = async (req, res) => {
         return res.status(200).json({ message: "you logged in", user, token }) //to front
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "internal server error" });
+        return res.status(500).json({ message: "internal server error", error });
     }
 }
 
