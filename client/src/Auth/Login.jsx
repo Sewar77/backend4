@@ -10,6 +10,7 @@ export default function Login() {
   });
   const { login, logout } = useAuth();
   const handleSubmit = () => {
+    console.log("userdata from login", userData);
     login(userData);
   };
   return (

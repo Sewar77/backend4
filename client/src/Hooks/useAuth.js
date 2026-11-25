@@ -35,9 +35,9 @@ export const useAuth = () => {
             console.log(error);
         }
     };
-    const login = async (userData = {}) => {
+    const login = async (userData) => {
         try {
-            console.log(userData)
+            console.log("userData", userData)
             if (!userData.email || !userData.password) {
                 toast.error("please fill all fleidls!");
                 return;
@@ -66,7 +66,8 @@ export const useAuth = () => {
             toast.success(res.data.message);
         } catch (error) {
             toast.error(error.response?.data?.message);
-            console.log(error.response);
+            console.log("error: ", error.response);
+            console.log("error2: ", error);
         }
     };
     const logout = () => {
