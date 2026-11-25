@@ -26,7 +26,7 @@ app.use(express.json()); // will recieve only json
 // security - on api headers
 app.use(
     cors({
-        origin: "https://backend4-two.vercel.app", //this is whome will send the requests
+        origin: "https://backend4-1-ni8b.onrender.com", //this is whome will send the requests
         credentials: true, //allow data in body  cardentails
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'] //for api server
     }),
