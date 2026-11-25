@@ -12,7 +12,7 @@ export const addToCart = async (req, res) => {
         const { productId, quantity = 1 } = req.body;
 
         if (!mongoose.isValidObjectId(productId)) {
-            return res.status(400).json({ message: "invalid product" })
+            return res.status(400).json({ message: "invalid product" });
         }
 
         const product = await Product.findById(productId).populate("catId", "name");
@@ -31,7 +31,9 @@ export const addToCart = async (req, res) => {
             });
         }
         // if no OR there is cart
-        const existingItem = cart.items.find((item) => item.product.toString() === productId);
+        const existingItem = cart.items.find(
+            (item) => item.product.toString() === productId,
+        );
         if (existingItem) {
             // if products exist, add quantity
             existingItem.quantity += quantity;
@@ -41,12 +43,12 @@ export const addToCart = async (req, res) => {
                 quantity,
             });
         }
-        product.stock -= quantity
+        product.stock -= quantity;
         if (product.stock < 1) {
             return res.status(400).json({ message: "product is out of stock!" });
         }
-        await cart.save()
-        return res.status(200).json({ message: "item added to cart", cart })
+        await cart.save();
+        return res.status(200).json({ message: "item added to cart", cart });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
@@ -55,51 +57,80 @@ export const addToCart = async (req, res) => {
 
 export const getCartByUserId = async (req, res) => {
     try {
-        const userId = req.user.id
+        const userId = req.user.id;
 
         let cart = await Cart.findOne({ user: userId })
             .populate("user", "name email")
-            .populate("items.product", "name price stock")
+            .populate("items.product", "name price stock");
+
         if (!cart) {
             cart = await Cart.create({
                 user: userId,
                 items: [],
             });
         }
-        return res.status(200).json({ message: "cart get suuceesfully", cart })
+        const totalPrice = cart.items.reduce((total, item) => {
+            return total + item.product.price * item.quantity;
+        }, 0);
+        return res
+            .status(200)
+            .json({ message: "cart get suuceesfully", cart, totalPrice });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
     }
-}
+};
 
 export const decreaseQuantity = async (req, res) => {
     try {
-        const userId = req.user.id
+        const userId = req.user.id;
 
         const { productId, quantity } = req.body;
         const product = await Product.findById(productId).populate("catId", "name");
-        console.log("product", product)
+        console.log("product", product);
 
         if (!product) {
             return res.status(404).json({ message: "products is not found" });
         }
         let cart = await Cart.findOne({ user: userId });
 
-        const item = cart.items.find(item => item.product.toString() === productId)
+        const item = cart.items.find(
+            (item) => item.product.toString() === productId,
+        );
         if (!item) {
             return res.status(404).json({ message: "items is not found" });
         }
         item.quantity -= quantity;
         product.stock += quantity;
         if (item.quantity < 1) {
-            cart.items = cart.items.filter(item => item.product.toString() !== productId)
+            cart.items = cart.items.filter(
+                (item) => item.product.toString() !== productId,
+            );
         }
-        await cart.save()
-        return res.status(200).json({ message: "cart updated", cart })
-
+        await cart.save();
+        return res.status(200).json({ message: "cart updated", cart });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "internal server error" });
     }
-}
+};
+
+export const reomveCartItems = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        let cart = await Cart.findOneAndUpdate(
+            { user: userId },
+            {
+                $set: { items: [] },
+            },
+            { new: true },
+        );
+        if (!cart) {
+            return res.status(400).json({ message: "something went wrong!" });
+        }
+        return res.status(200).json({ message: "all items removed from cart" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+};
