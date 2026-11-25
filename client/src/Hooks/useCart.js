@@ -47,5 +47,18 @@ export const useCart = () => {
             console.log(error.response?.data?.message)
         }
     }
-    return { getCartByUser, cart, addToCart, minusFromCart, totalPrice, clearCart }
+    const checkOut = async () => {
+        try {
+            const res = await api.delete('/cart')
+            toast.success("ckeck out suuccessfully")
+            setCart([])
+            setTotalPrice(0)
+            getCartByUser()
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+            console.log(error.response?.data?.message)
+        }
+    }
+
+    return { getCartByUser, cart, addToCart, minusFromCart, totalPrice, clearCart, checkOut }
 }

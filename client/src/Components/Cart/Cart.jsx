@@ -23,6 +23,7 @@ export default function Cart() {
     minusFromCart,
     totalPrice,
     clearCart,
+    checkOut,
   } = useCart();
   useEffect(() => {
     getCartByUser();
@@ -122,6 +123,11 @@ export default function Cart() {
             );
           })}
         </Grid>
+        {cart.items?.length !== 0 && (
+          <>
+            <Button onClick={() => checkOut()}>CHECKOT</Button>
+          </>
+        )}
       </Container>
     </>
   );
