@@ -54,6 +54,8 @@ export default function Header() {
               flexWrap: "wrap",
             }}
           >
+            <IconButton onClick={() => navigate("/")}>Home</IconButton>
+
             {Object.keys(currentUser).length !== 0 &&
               currentUser.role !== "user" && (
                 <IconButton
@@ -62,8 +64,9 @@ export default function Header() {
                   Dashboard
                 </IconButton>
               )}
-
-            <IconButton onClick={() => navigate("/")}>Home</IconButton>
+            {Object.keys(currentUser).length !== 0 && (
+              <IconButton onClick={() => navigate(`/cart`)}>Cart</IconButton>
+            )}
 
             <IconButton onClick={() => navigate("/products")}>
               Products
